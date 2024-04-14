@@ -59,8 +59,6 @@ class BankViewModel(private val getBanksUseCase: GetBanksUseCase) : ViewModel() 
             }
         }
     }
-
-
 }
 
 data class BanksState(

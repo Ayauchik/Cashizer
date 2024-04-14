@@ -31,6 +31,11 @@ class UserRepositoryImpl (
         return companiesByName.map { companyMapper.fromRemoteToDomain(it) }
     }
 
+    override suspend fun getCashbacks(): List<Cashback> {
+        val cashbacks = placeholderService.getCashbacks()
+        return cashbacks.map { cashbackMapper.fromRemoteToDomain(it) }
+    }
+
     override suspend fun getCashbacksByCompanyId(id: Int): List<Cashback> {
         val cashbacks = placeholderService.getCashbacksByCompanyName(id)
         return cashbacks.map { cashbackMapper.fromRemoteToDomain(it) }

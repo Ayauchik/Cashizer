@@ -5,5 +5,5 @@ import kz.hackathon.krcm_36.domain.repository.UserRepository
 import org.koin.dsl.module
 
 val repositoryModule = module{
-    factory<UserRepository> {UserRepositoryImpl(get(), get(), get())}
+    factory<UserRepository> {UserRepositoryImpl(get(), get(), get(), get())}
 }

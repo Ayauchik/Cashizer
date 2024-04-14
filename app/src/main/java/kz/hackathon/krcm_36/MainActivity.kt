@@ -50,9 +50,16 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kz.hackathon.krcm_36.ui.navigation.Routing
+import kz.hackathon.krcm_36.ui.screens.company.CompanyScreen
 import kz.hackathon.krcm_36.ui.screens.main.SearchScreen
 import kz.hackathon.krcm_36.ui.screens.main.TopBarScreen
 import kz.hackathon.krcm_36.ui.screens.navigation.NavigationItem
@@ -74,7 +81,6 @@ class MainActivity : ComponentActivity() {
                     NavigationItem(
                         title = "My Cards",
                         selectedIcon = painterResource(id =R.drawable.ic_card),
-                      //  unselectedIcon = painterResource(id = R.drawable.ic_card),
                     ),
                     NavigationItem(
                         title = "Settings",
@@ -162,28 +168,51 @@ class MainActivity : ComponentActivity() {
                                             )
                                         }
                                     },
-                                    //modifier = Modifier.size(width = 1000.dp, height = 150.dp)
                                 )
                             },
-                        ) {
+                        ) {padding ->
                             Column(
-                                modifier = Modifier.padding(it)
+                                modifier = Modifier.padding(padding)
                             ){
-                                Routing()
+                                val navController = rememberNavController()
+                                NavHost(navController = navController, startDestination = Screen.Main.route){
+                                    composable(route = Screen.Main.route){
+                                        SearchScreen(navController)
+                                    }
+                                    composable(
+                                        route = Screen.Company.route,
+                                        arguments = listOf(
+                                          //  navArgument("name") { type = NavType.StringType } ,
+                                            navArgument("id") { type = NavType.IntType }
+                                        )
+                                    ) { backStackEntry ->
+                                        //val companyName = backStackEntry.arguments?.getString("name")
+                                        val companyId = backStackEntry.arguments?.getInt("id")
+                                        if(/*companyName != null &&*/ companyId != null){
+                                            CompanyScreen(id = companyId)
+                                        }
+                                    }
+                                }
                             }
-//                            Box(modifier = Modifier.fillMaxSize()){
-//                                Spacer(modifier = Modifier.height(50.dp))
-//                                Routing()
-//                            }
-                            Log.e("something", "${it.toString()}")
                         }
                     }
-
                 }
-                //Routing()
-//                    Greeting("Android")
             }
         }
     }
 }
+
+
+
+sealed class Screen(val route: String){
+    object Main: Screen("main")
+    object Company: Screen("company/{id}")
+}
+
+@Composable
+private fun currentRoute(navController: NavController): String? {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    return navBackStackEntry?.destination?.route
+}
+
 

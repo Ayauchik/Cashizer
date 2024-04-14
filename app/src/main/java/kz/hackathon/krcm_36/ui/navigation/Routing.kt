@@ -9,20 +9,20 @@ import androidx.navigation.navArgument
 import kz.hackathon.krcm_36.ui.screens.company.CompanyScreen
 import kz.hackathon.krcm_36.ui.screens.main.SearchScreen
 
-@Composable
-fun Routing()
-{
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "/main"){
-        composable("/main"){
-            SearchScreen(navController)
-        }
-        composable(
-            route = "main/company/{name}",
-            arguments = listOf(navArgument("name") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val companyName = backStackEntry.arguments?.getString("name")
-            companyName?.let { CompanyScreen(it) }
-        }
-    }
-}
+//@Composable
+//fun Routing()
+//{
+//    val navController = rememberNavController()
+//    NavHost(navController = navController, startDestination = "/main"){
+//        composable("/main"){
+//            SearchScreen(navController)
+//        }
+//        composable(
+//            route = "main/{name}",
+//            arguments = listOf(navArgument("name") { type = NavType.StringType })
+//        ) { backStackEntry ->
+//            val companyName = backStackEntry.arguments?.getString("name")
+//            companyName?.let { CompanyScreen(it) }
+//        }
+//    }
+//}

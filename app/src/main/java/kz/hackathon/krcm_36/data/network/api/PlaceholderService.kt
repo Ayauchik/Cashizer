@@ -16,6 +16,9 @@ interface PlaceholderService  {
     @GET("company/{name}")
     suspend fun getCompanyByName(@Path("name")name: String): List<CompanyResponse>
 
-    @GET("company/{id}/cashback")
+    @GET("company/{id}/cashbacks")
     suspend fun getCashbacksByCompanyName(@Path("id")id: Int): List<CashbackResponse>
+
+    @GET("cashback")
+    suspend fun getCashbacks(): List<CashbackResponse>
 }

@@ -8,5 +8,6 @@ interface UserRepository {
     suspend fun getBanks(): List<Bank>
     suspend fun getCompanies(): List<Company>
     suspend fun getCompaniesByName(name: String): List<Company>
+    suspend fun getCashbacks(): List<Cashback>
     suspend fun getCashbacksByCompanyId(id: Int): List<Cashback>
 }

@@ -1,10 +1,12 @@
 package kz.hackathon.krcm_36.ui.screens.main
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import kz.hackathon.krcm_36.R
 import kz.hackathon.krcm_36.ui.theme.PrimaryYellow
 import kz.hackathon.krcm_36.ui.views.CompanyItem
@@ -140,32 +143,30 @@ fun SearchScreen(
                         fontSize = 50.sp,
                     )
                 }
-                //Spacer(modifier = Modifier.size(40.dp))
                 Image(
                     painter = painterResource(id = R.drawable.cards),
                     contentDescription = "bank cards",
                     modifier = Modifier
                         .padding(top = 20.dp, end = 20.dp)
                         .size(500.dp)
-                        //.border(width = 4.dp, color = Color.Black)
                 )
 
 
             }
         }
 
-        Column {
-            when {
-                companiesState.value.loading -> {
-                    // Show loading indicator
-                }
-                companiesState.value.error != null -> {
-                    // Show error message
-                }
-                else -> {
-                    companiesState.value.companies?.forEach { company ->
-                        CompanyItem(id = company.id, name = company.name){
-                            navController.navigate("main/company/${company.name}")
+        LazyColumn {
+            item {
+                when {
+                    companiesState.value.loading -> {
+                        // Show loading indicator
+                    }
+                    companiesState.value.error != null -> {
+                        // Show error message
+                    }
+                    else -> {
+                        companiesState.value.companies?.forEach { company ->
+                            CompanyItem(id = company.id, name = company.name, navController = navController)
                         }
                     }
                 }
@@ -175,11 +176,6 @@ fun SearchScreen(
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewSearchScreen() {
-//    SearchScreen(NavController())
-//}
 
 val provider = GoogleFont.Provider(
     providerAuthority = "com.google.android.gms.fonts",
